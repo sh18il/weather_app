@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
-import 'package:weather_app/service/phone_auth_service.dart';
+import 'package:weather_app/viewmodel/phone_auth_service.dart';
 import 'package:weather_app/view/widgets/auth_page.dart';
 
 class PhoneOtpPage extends StatelessWidget {
@@ -13,6 +15,7 @@ class PhoneOtpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController phoneCtrl = TextEditingController();
     TextEditingController otpCtrl = TextEditingController();
+    final provider = Provider.of<PhoneOtpAuth>(context, listen: false);
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -22,28 +25,33 @@ class PhoneOtpPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Form(
-                  key: formKey,
-                  child: TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: phoneCtrl,
-                    decoration: const InputDecoration(
-                      prefix: Text("+91"),
-                      prefixIcon: Icon(Icons.phone),
-                      labelText: "Enter Phone Number",
-                      border: OutlineInputBorder(),
+                Lottie.asset("assets/Animation - 1723141875176.json",
+                    fit: BoxFit.contain, width: 300),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Form(
+                    key: formKey,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: phoneCtrl,
+                      decoration: const InputDecoration(
+                        prefix: Text("+91"),
+                        prefixIcon: Icon(Icons.phone),
+                        labelText: "Enter Phone Number",
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value!.length != 10) return "invalid phone number";
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.length != 10) return "invalid phone number";
-                      return null;
-                    },
                   ),
                 ),
                 const Gap(20),
                 ElevatedButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        PhoneOtpAuth.sentOtp(
+                        provider.sentOtp(
                             phone: phoneCtrl.text,
                             errorStep: () => ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
@@ -86,11 +94,10 @@ class PhoneOtpPage extends StatelessWidget {
                                         onPressed: () {
                                           if (formKey1.currentState!
                                               .validate()) {
-                                            PhoneOtpAuth.loginWithOtp(
-                                                    otp: otpCtrl.text)
+                                            provider
+                                                .loginWithOtp(otp: otpCtrl.text)
                                                 .then((value) {
                                               if (value == "Success") {
-                                                // Navigator.pop(context);
                                                 Navigator.of(context)
                                                     .pushReplacement(
                                                         MaterialPageRoute(

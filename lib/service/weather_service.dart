@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:weather_app/model/weather_model.dart';
+import 'package:weather_app/service/secret_key.dart';
 
 class WeatherService {
   Dio dio = Dio();
 
   Future<WeatherResponse> fetchingData(String city) async {
-    final apiKey = '71ced824c06aeece5832d666f4f632a8';
     final url =
         'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey';
 

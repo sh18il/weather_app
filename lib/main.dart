@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/firebase_options.dart';
 
 import 'package:weather_app/view/widgets/auth_page.dart';
+import 'package:weather_app/viewmodel/phone_auth_service.dart';
 
 import 'package:weather_app/viewmodel/service_controller.dart';
 
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => WeatherProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PhoneOtpAuth(),
         ),
       ],
       child: MaterialApp(

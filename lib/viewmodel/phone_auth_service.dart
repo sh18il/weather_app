@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
-class PhoneOtpAuth {
+class PhoneOtpAuth extends ChangeNotifier {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static String verifyId = "";
 
-  static Future sentOtp({
+  Future sentOtp({
     required String phone,
     required Function errorStep,
     required Function nextStep,
@@ -36,7 +37,7 @@ class PhoneOtpAuth {
     } catch (e) {}
   }
 
-  static Future loginWithOtp({required String otp}) async {
+  Future loginWithOtp({required String otp}) async {
     final cred =
         PhoneAuthProvider.credential(verificationId: verifyId, smsCode: otp);
 
